@@ -2,7 +2,7 @@
     "name": "customcasper",
     "description": "Custom Casper with photos, Based on Casper",
     "demo": "https://demo.ghost.io",
-    "version": "3.0.584",
+    "version": "3.0.585",
     "engines": {
         "ghost": ">=3.0.0",
         "ghost-api": "v3"
