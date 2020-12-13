@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Forward Kinematics Calculator from DH Parameters</title>
+
+    <meta name="description" content="A Forward Kinematics Calculator given the DH parameters.">
+    <meta name="keywords"
+        content="DH parameters calculator,DH calculator,Forward Kinematics calculator,Denavit-Hartenberg Forward kinematics,Denavit-Hartenberg,Denavit Hartenberg,Denavit Hartenberg parameter,DH,Denavit,Hartenberg,prajankya sonar,robotics,6DOF,DOF,kinematics,Forward,DH parameters,robotics">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <link rel="author" href="https://google.com/+PrajankyaSonar" />
+    <meta name="author" content="prajankya" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+
+    <meta property="og:title"
+        content="Forward Kinematics Calculator from DH Parameters. Prajankya's Personal website" />
+    <meta property="og:site_name" content="Prajankya&#x27;s Personal website" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="DH Calculator for Forward Kinematics" />
+    <meta property="og:url" content="https://prajankya.me/dh" />
+
+    <meta property="og:image" content="https://prajankya.me/images/me.jpg" />
+    <meta property="article:publisher" content="https://www.facebook.com/prajankya" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta property="og:image:width" content="380" />
+    <meta property="og:image:height" content="507" />
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/favicon.ico">
+
+    <style>
+        body {
+            overflow-y: hidden;
+        }
+
+        #preloader {
+            background: #000;
+            position: fixed;
+            z-index: 999999;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #preloader>div {
+            margin: 50px;
+            height: 28px;
+            width: 28px;
+            animation: rotate 0.8s infinite linear;
+            border: 6px solid #fff;
+            border-right-color: transparent;
+            border-radius: 50%;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .inline_preloader {
+            width: 100%;
+            height: 50px;
+            text-align: center;
+            background: url('/images/favicons/ajax-loader.gif') center center no-repeat;
+        }
+
+        .modal-open {
+            padding-right: 0px !important;
+        }
+
+        .content {
+            padding: 10px 60px;
+        }
+
+        .header {
+            height: 200px;
+            color: #5e564c;
+            text-align: left;
+            width: 100%;
+            padding-left: 30px;
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            flex-direction: column;
+            background: #b6afa669;
+        }
+
+
+        /*-----------------------------------------------------------------------------------*/
+        /*  Footer
+        /*-----------------------------------------------------------------------------------*/
+
+        #footer {
+            background: #f7f7f7;
+            padding-top: 40px;
+            padding-bottom: 10px;
+        }
+
+        #footer .logo_img {
+            padding-bottom: 40px;
+        }
+
+        #footer .socials-media {
+            width: 100%;
+        }
+
+        #footer .socials-media ul {
+            display: inline-block;
+            float: none;
+            margin: 0 0 20px 0;
+        }
+
+        #footer .socials-media ul li {
+            float: left;
+            padding: 10px;
+        }
+
+        #footer .socials-media ul li a {
+            font-size: 24px;
+            color: #999;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+            background: transparent;
+            text-transform: uppercase;
+            -moz-transition: all 0.5s ease-in-out 0s;
+            -ms-transition: all 0.5s ease-in-out 0s;
+            -o-transition: all 0.5s ease-in-out 0s;
+            -webkit-transition: all 0.5s ease-in-out 0s;
+            transition: all 0.5s ease-in-out 0s;
+        }
+
+        #footer .socials-media ul li a:hover {
+            color: #b8a07e;
+            -moz-transition: all 0.5s ease-in-out 0s;
+            -ms-transition: all 0.5s ease-in-out 0s;
+            -o-transition: all 0.5s ease-in-out 0s;
+            -webkit-transition: all 0.5s ease-in-out 0s;
+            transition: all 0.5s ease-in-out 0s;
+        }
+
+        #footer p {
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+            margin-top: 0;
+            text-transform: uppercase;
+        }
+
+        .credits {
+            font-size: 13px;
+        }
+
+        .matrix {
+            display: block;
+            unicode-bidi: embed;
+            font-family: monospace;
+            white-space: pre;
+            line-height: normal;
+        }
+
+        .matrix span {
+            width: 30px;
+            text-align: right;
+        }
+
+        .formula {
+            font-family: monospace;
+            line-height: normal;
+            text-align: center;
+            padding: 12px 16px;
+            background: #eee;
+        }
+
+        .mono {
+            font-family: monospace;
+            line-height: normal;
+            font-weight: 700;
+            padding: 4px 8px;
+            font-size: 16px;
+            background: #fdfdfd;
+        }
+
+        .side_img img {
+            max-width: 100%;
+            cursor: pointer;
+        }
+
+        .content h3 {
+            margin-top: 10px !important;
+            color: #a18e73;
+
+        }
+    </style>
+
+    <div id="preloader">
+        <div></div>
+    </div>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="194x194" href="/images/favicons/favicon-194x194.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/favicons/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
+    <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+    <meta name="msapplication-config" content="/images/favicons/browserconfig.xml">
+    <link rel="mask-icon" href="/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+
+    <meta name="apple-mobile-web-app-title" content="Prajankya's Website">
+    <meta name="application-name" content="Prajankya's Website">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Bootstrap CSS File -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css"
+        integrity="sha512-oc9+XSs1H243/FRN9Rw62Fn8EtxjEYWHXRvjS43YtueEewbS6ObfXcJNyohjHqVKFPoXXUxwc+q1K7Dee6vv9g=="
+        crossorigin="anonymous" />
+
+    {{!--
+    <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet"> --}}
+
+    <!-- Responsive css -->
+    {{!--
+    <link href="/css/responsive.css" rel="stylesheet"> --}}
+</head>
+
+<body ng-app="MyApp" ng-controller="MyController">
+    <!-- ============= DONE LOADING =============== -->
+    <!-- start section header -->
+    <div class="home header">
+        <h1>
+            Calculate Transformation matrix from D-H Parameters
+        </h1>
+    </div>
+    <div class="content mt-4 pt-4 mb-2 pb-2">
+        <h3>Step 1: Define Z Axis</h3>
+        <hr>
+        <p>Choose <span class="mono">z<sub>i</sub></span> along the axis of motion of the <span
+                class="mono">i+1<sup>th</sup></span> link.</p>
+        <div class="mt-4 mt-sm-2 col-md-4 side_img" ng-click="openNewWindow('/images/others/z_axis.png')">
+            <picture>
+                <source media="(min-width: 900px)"
+                    srcset="/images/others/z_axis-1440_1x.webp 1x, /images/others/z_axis-1440_2x.webp 2x"
+                    type="image/webp">
+                <source media="(min-width: 600px)"
+                    srcset="/images/others/z_axis-900_1x.webp 1x, /images/others/z_axis-900_2x.webp 2x"
+                    type="image/webp">
+                <source media="(min-width: 200px)"
+                    srcset="/images/others/z_axis-600_1x.webp 1x, /images/others/z_axis-600_2x.webp 2x"
+                    type="image/webp">
+                <source srcset="/images/others/z_axis-200_1x.webp 1x, /images/others/z_axis-200_2x.webp 2x"
+                    type="image/webp">
+                <img alt="Front page"
+                    srcset="/images/others/z_axis-200.png 200w, /images/others/z_axis-600.png 600w, /images/others/z_axis-900.png 900w, /images/others/z_axis-1440.png 1440w"
+                    src="/images/others/z_axis.png">
+            </picture>
+
+        </div>
+    </div>
+    <div class="content my-2 py-2">
+        <h3>Step 2: Define X Axis</h3>
+        <hr>
+        <p>Choose <span class="mono">x<sub>i</sub></span> such that it is the shortest vector between <span
+                class="mono">z<sub>i-1</sub></span> and <span class="mono">z<sub>i</sub></span>.</p>
+        <div class="mt-4 mt-sm-2 col-md-8 side_img" ng-click="openNewWindow('/images/others/x_axis.png')">
+            <picture>
+                <source media="(min-width: 900px)"
+                    srcset="/images/others/x_axis-1440_1x.webp 1x, /images/others/x_axis-1440_2x.webp 2x"
+                    type="image/webp">
+                <source media="(min-width: 600px)"
+                    srcset="/images/others/x_axis-900_1x.webp 1x, /images/others/x_axis-900_2x.webp 2x"
+                    type="image/webp">
+                <source media="(min-width: 200px)"
+                    srcset="/images/others/x_axis-600_1x.webp 1x, /images/others/x_axis-600_2x.webp 2x"
+                    type="image/webp">
+                <source srcset="/images/others/x_axis-200_1x.webp 1x, /images/others/x_axis-200_2x.webp 2x"
+                    type="image/webp">
+                <img alt="Front page"
+                    srcset="/images/others/x_axis-200.png 200w, /images/others/x_axis-600.png 600w, /images/others/x_axis-900.png 900w, /images/others/x_axis-1440.png 1440w"
+                    src="/images/others/x_axis.png">
+            </picture>
+
+        </div>
+    </div>
+    <div class="content my-2 py-2">
+        <h3>Step 3: Get D-H Paramerters</h3>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-8 myform">
+                <div class="form-row mb-3">
+                    <label for="a" class="col-2 col-sm-2 col-md-1 p-2 my-auto"><strong>a:</strong></label>
+                    <div class="col-10 col-sm-4 col-md-3 col-lg-2 p-2">
+                        <input ng-model="a" class="ml-md-auto form-control" aria-label="a" aria-describedby="a" required
+                            type="text" floating-number-only>
+                    </div>
+                    <div class="col-sm-6 col-md-8 col-lg-9 mt-1 my-sm-auto">
+                        <span class="mono">a<sub>i</sub></span> is the distance between <span
+                            class="mono">z<sub>i-1</sub></span> and
+                        <span class="mono">x<sub>i</sub></span> along the direction of <span
+                            class="mono">x<sub>i</sub></span>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <label for="alpha" class="col-2 col-sm-2 col-md-1 p-2 my-auto"><strong>alpha:</strong></label>
+                    <div class="col-10 col-sm-4 col-md-3 col-lg-2 p-2">
+                        <input ng-model="alpha" class="ml-md-auto form-control" aria-label="alpha"
+                            aria-describedby="alpha" required type="text" floating-number-only>
+                    </div>
+                    <div class="col-sm-6 col-md-8 col-lg-9 mt-1 my-sm-auto">
+                        <strong>(In Degrees)</strong>
+                        <span class="mono">&alpha;<sub>i</sub></span> is the angle between <span
+                            class="mono">z<sub>i-1</sub></span> and <span class="mono">z<sub>i</sub></span> along <span
+                            class="mono">x<sub>i</sub></span>
+                    </div>
+                </div>
+
+                <div class="form-row mb-3">
+                    <label for="d" class="col-2 col-sm-2 col-md-1 p-2 my-auto"><strong>d:</strong></label>
+                    <div class="col-10 col-sm-4 col-md-3 col-lg-2 p-2">
+                        <input ng-model="d" class="ml-md-auto form-control" aria-label="d" aria-describedby="d" required
+                            type="text" floating-number-only>
+                    </div>
+                    <div class="col-sm-6 col-md-8 col-lg-9 mt-1 my-sm-auto">
+                        <span class="mono">d<sub>i</sub></span> is the distance between <span
+                            class="mono">z<sub>i-1</sub></span> and <span class="mono">x<sub>i</sub></span> along the
+                        direction
+                        of <span class="mono">z<sub>i-1</sub></span>
+                    </div>
+                </div>
+
+                <div class="form-row mb-3">
+                    <label for="theta" class="col-2 col-sm-2 col-md-1 p-2 my-auto"><strong>theta:</strong></label>
+                    <div class="col-10 col-sm-4 col-md-3 col-lg-2 p-2">
+                        <input ng-model="theta" class="ml-md-auto form-control" aria-label="theta"
+                            aria-describedby="theta" required type="text" floating-number-only>
+                    </div>
+                    <div class="col-sm-6 col-md-8 col-lg-9 mt-1 my-sm-auto">
+                        <strong>(In Degrees)</strong>
+                        <span class="mono">&theta;<sub>i</sub></span> is the angle between <span
+                            class="mono">x<sub>i-1</sub></span> and <span class="mono">x<sub>i</sub></span> along<span
+                            class="mono">z<sub>i-1</sub></span>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>NOTE: unit of <span class="mono">a</span> and <span class="mono">d</span> should be
+                        same.</strong>
+                </p>
+
+                <span ng-if="d==undefined || alpha==undefined || a==undefined || theta==undefined">
+                    <input class="btn btn-outline-primary pb-2" type="button" style="cursor: not-allowed;"
+                             value="Insert Link" />
+                </span>
+                
+                <span ng-if="!(d==undefined || alpha==undefined || a==undefined || theta==undefined)">
+                    <input class="btn btn-success pb-2" type="button" 
+                            ng-click="Add()" value="Insert Link" />
+                </span>
+                
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button class="btn btn-secondary pb-2 ml-4" ng-click="loadExample()" tabindex="-1">
+                        Load an Example Robot
+                    </button>
+                    <button type="button" class="btn btn-outline-info" data-toggle="modal"
+                        data-target="#demoModal">&quest;</button>
+                </div>
+
+            </div>
+            <div class="mt-4 mt-sm-2 col-md-4 side_img" ng-click="openNewWindow('/images/others/params.png')">
+                <picture>
+                    <source media="(min-width: 900px)"
+                        srcset="/images/others/params-1440_1x.webp 1x, /images/others/params-1440_2x.webp 2x"
+                        type="image/webp">
+                    <source media="(min-width: 600px)"
+                        srcset="/images/others/params-900_1x.webp 1x, /images/others/params-900_2x.webp 2x"
+                        type="image/webp">
+                    <source media="(min-width: 200px)"
+                        srcset="/images/others/params-600_1x.webp 1x, /images/others/params-600_2x.webp 2x"
+                        type="image/webp">
+                    <source srcset="/images/others/params-200_1x.webp 1x, /images/others/params-200_2x.webp 2x"
+                        type="image/webp">
+                    <img alt="Front page"
+                        srcset="/images/others/params-200.png 200w, /images/others/params-600.png 600w, /images/others/params-900.png 900w, /images/others/params-1440.png 1440w"
+                        src="/images/others/params.png">
+                </picture>
+            </div>
+        </div>
+        </br>
+        </br>
+        <div ng-if="links.length>0">
+            <table class="table table-hover table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">link</th>
+                        <th scope="col">a</th>
+                        <th scope="col">alpha</th>
+                        <th scope="col">d</th>
+                        <th scope="col">theta</th>
+                        <th>Matrix</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="" ng-repeat="l in links">
+                        <td>
+                            <input class="form-control" scope="row" ng-model="l.name" required type="text">
+                        </td>
+                        <td>
+                            <input class="form-control" ng-model="l.a" required type="text" floating-number-only>
+                        </td>
+                        <td>
+                            <input class="form-control" ng-model="l.alpha" required type="text" floating-number-only>
+                        </td>
+                        <td>
+                            <input class="form-control" ng-model="l.d" required type="text" floating-number-only>
+                        </td>
+                        <td>
+                            <input class="form-control" ng-model="l.theta" required type="text" floating-number-only>
+                        </td>
+                        <td>
+                            <span class="matrix">[[printMatrix(l)]]</span>
+                        </td>
+                        <td><input class="btn btn-danger" type="button" ng-click="Remove($index)" value="Remove" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="content my-2 py-2">
+        <h3>Step 4: Get Transformation matrix</h3>
+        <hr>
+        <p>Use this Transformation matrix to calculate Inverse and Forward Kinematics.</p>
+        <p class="formula" ng-if="links.length>0">
+            T = <span ng-repeat="l in links | reverse">
+                [[l.name]] <span ng-if="!$last"> &nbsp;*&nbsp;</span>
+            </span>
+        </p>
+        <p class="formula" ng-if="links.length==0">
+            T = (I)
+        </p>
+        <div class="text-center">
+            <span class="matrix">[[printFinalMatrix()]]</span>
+        </div>
+    </div>
+    <br>
+    <hr class="m-0 p-0">
+    <hr class="m-0 p-0">
+    <hr class="m-0 p-0">
+    <hr class="m-0 p-0">
+    <!-- start section footer -->
+    <div id="footer" class="text-center">
+        <div class="container">
+            <div class="socials-media text-center">
+                <ul class="list-unstyled">
+                    <li>
+                        <a itemprop="sameAs" href="https://github.com/Prajankya" target="_blank" title="/Prajankya"
+                            onclick="social('github');">
+                            <i class="ion-social-github"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a itemprop="sameAs" href="https://in.linkedin.com/in/Prajankya" target="_blank"
+                            title="/in/Prajankya" onclick="social('linkedin');">
+                            <i class="ion-social-linkedin"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a itemprop="sameAs" href="https://www.facebook.com/Prajankya" target="_blank"
+                            title="/Prajankya" onclick="social('facebook');">
+                            <i class="ion-social-facebook"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <p>&copy; Copyrights Prajankya. All rights reserved.</p>
+        </div>
+    </div>
+    <!-- End section footer -->
+
+    <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="demoModalLabel">More Info about Demo Robot</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>The Example DH parameters are for ABB IRB120.</p>
+                    <div class="">
+                        <div class=" side_img" ng-click="openNewWindow('/images/others/abb_irb120.png')">
+                            <picture>
+                                <source media="(min-width: 900px)"
+                                    srcset="/images/others/abb_irb120-1440_1x.webp 1x, /images/others/abb_irb120-1440_2x.webp 2x"
+                                    type="image/webp">
+                                <source media="(min-width: 600px)"
+                                    srcset="/images/others/abb_irb120-900_1x.webp 1x, /images/others/abb_irb120-900_2x.webp 2x"
+                                    type="image/webp">
+                                <source media="(min-width: 200px)"
+                                    srcset="/images/others/abb_irb120-600_1x.webp 1x, /images/others/abb_irb120-600_2x.webp 2x"
+                                    type="image/webp">
+                                <source
+                                    srcset="/images/others/abb_irb120-200_1x.webp 1x, /images/others/abb_irb120-200_2x.webp 2x"
+                                    type="image/webp">
+                                <img alt="Front page"
+                                    srcset="/images/others/abb_irb120-200.png 200w, /images/others/abb_irb120-600.png 600w, /images/others/abb_irb120-900.png 900w, /images/others/abb_irb120-1440.png 1440w"
+                                    src="/images/others/abb_irb120.png">
+                            </picture>
+                        </div>
+                        <div class="side_img" ng-click="openNewWindow('/images/others/abb_irb120_dh.png')">
+                            <picture>
+                                <source media="(min-width: 900px)"
+                                    srcset="/images/others/abb_irb120_dh-1440_1x.webp 1x, /images/others/abb_irb120_dh-1440_2x.webp 2x"
+                                    type="image/webp">
+                                <source media="(min-width: 600px)"
+                                    srcset="/images/others/abb_irb120_dh-900_1x.webp 1x, /images/others/abb_irb120_dh-900_2x.webp 2x"
+                                    type="image/webp">
+                                <source media="(min-width: 200px)"
+                                    srcset="/images/others/abb_irb120_dh-600_1x.webp 1x, /images/others/abb_irb120_dh-600_2x.webp 2x"
+                                    type="image/webp">
+                                <source
+                                    srcset="/images/others/abb_irb120_dh-200_1x.webp 1x, /images/others/abb_irb120_dh-200_2x.webp 2x"
+                                    type="image/webp">
+                                <img alt="Front page"
+                                    srcset="/images/others/abb_irb120_dh-200.png 200w, /images/others/abb_irb120_dh-600.png 600w, /images/others/abb_irb120_dh-900.png 900w, /images/others/abb_irb120_dh-1440.png 1440w"
+                                    src="/images/others/abb_irb120_dh.png">
+                            </picture>
+                        </div>
+                        <div class="side_img" ng-click="openNewWindow('/images/others/irb_dh_params.png')">
+                            <picture>
+                                <source media="(min-width: 900px)"
+                                    srcset="/images/others/irb_dh_params-1440_1x.webp 1x, /images/others/irb_dh_params-1440_2x.webp 2x"
+                                    type="image/webp">
+                                <source media="(min-width: 600px)"
+                                    srcset="/images/others/irb_dh_params-900_1x.webp 1x, /images/others/irb_dh_params-900_2x.webp 2x"
+                                    type="image/webp">
+                                <source media="(min-width: 200px)"
+                                    srcset="/images/others/irb_dh_params-600_1x.webp 1x, /images/others/irb_dh_params-600_2x.webp 2x"
+                                    type="image/webp">
+                                <source
+                                    srcset="/images/others/irb_dh_params-200_1x.webp 1x, /images/others/irb_dh_params-200_2x.webp 2x"
+                                    type="image/webp">
+                                <img alt="Front page"
+                                    srcset="/images/others/irb_dh_params-200.png 200w, /images/others/irb_dh_params-600.png 600w, /images/others/irb_dh_params-900.png 900w, /images/others/irb_dh_params-1440.png 1440w"
+                                    src="/images/others/irb_dh_params.png">
+                            </picture>
+                        </div>
+
+                    </div>
+                    <small>The Robot and the images related to it are courtesy of abb.com website and are used here as
+                        reference only.</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="demoConfirmModal" tabindex="-1" role="dialog" aria-labelledby="demoConfirmModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="demoConfirmModalLabel">Confirm to replace all the data?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Demo Example will replace all the links already existing.
+                    <br>
+                    All the links/data entered in the table
+                    will be removed.
+                    <br>
+                    <br>
+                    Do you want to continue ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" ng-click="demoConfirmModalSubmit()">REPLACE and
+                        Load
+                        demo</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="removeConfirmModal" tabindex="-1" role="dialog"
+        aria-labelledby="removeConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeConfirmModalLabel">Do you want to remove?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Do you want to remove <i>[[link_to_remove_name]]</i>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" ng-click="RemoveConfirmed()">REMOVE
+                        <i>[[link_to_remove_name]]</i>
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"
+        integrity="sha512-8qmis31OQi6hIRgvkht0s6mCOittjMa9GMqtK9hes5iEQBQE/Ca6yGE5FsW36vyipGoWQswBj/QBm2JR086Rkw=="
+        crossorigin="anonymous"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <script>
+        $(function () {
+            $('#preloader').fadeOut();
+            $('body').css({
+                overflow: 'auto'
+            })
+
+        });
+        //        var app = angular.module('MyApp', [])
+
+        var app = angular.module('MyApp', [], function ($interpolateProvider) {
+            $interpolateProvider.startSymbol('[[');
+            $interpolateProvider.endSymbol(']]');
+        });
+
+        app.filter('reverse', function () {
+            return function (items) {
+                return items.slice().reverse();
+            };
+        });
+
+        app.controller('MyController', function ($scope, $window, $timeout) {
+            $scope.links = [];
+
+            var demo_links = [{
+                a: 0,
+                alpha: -90,
+                d: 290,
+                theta: 0,
+                name: "Link 1"
+            }, {
+                a: 270,
+                alpha: 0,
+                d: 0,
+                theta: -90,
+                name: "Link 2"
+            }, {
+                a: -70,
+                alpha: 90,
+                d: 0,
+                theta: 180,
+                name: "Link 3"
+            }, {
+                a: 0,
+                alpha: -90,
+                d: 302,
+                theta: 0,
+                name: "Link 4"
+            }, {
+                a: 0,
+                alpha: 90,
+                d: 0,
+                theta: 0,
+                name: "Link 5"
+            }, {
+                a: 0,
+                alpha: 0,
+                d: 72,
+                theta: 0,
+                name: "Link 6"
+            }];
+
+            $scope.loadExample = function () {
+                if ($scope.links.length > 0) {
+                    $('#demoConfirmModal').modal()
+                } else {
+                    $scope.links = angular.copy(demo_links);
+                }
+
+            }
+            $scope.demoConfirmModalSubmit = function () {
+                $timeout(function () {
+                    $scope.links = angular.copy(demo_links);
+                    $('#demoConfirmModal').modal('hide')
+                });
+            }
+            $scope.Add = function () {
+                //Add the new item to the Array.
+                var link = {};
+                link.d = $scope.d;
+                link.alpha = $scope.alpha;
+                link.a = $scope.a;
+                link.theta = $scope.theta;
+
+                var getName = function (ind) {
+                    var newName = "Link " + ind
+                    for (let i = 0; i < $scope.links.length; i++) {
+                        if ($scope.links[i].name && $scope.links[i].name.trim() == newName) {
+                            return getName(++ind)
+                            break;
+                        }
+                    }
+                    return newName
+                }
+                link.name = getName($scope.links.length)
+
+                $scope.links.push(link);
+
+                $scope.d = undefined;
+                $scope.alpha = undefined;
+                $scope.theta = undefined;
+                $scope.a = undefined;
+            };
+
+            $scope.Remove = function (index) {
+                $scope.link_to_remove_index = index;
+                $scope.link_to_remove_name = $scope.links[index].name;
+                $("#removeConfirmModal").modal('show');
+            }
+            $scope.RemoveConfirmed = function () {
+                $scope.links.splice($scope.link_to_remove_index, 1);
+                $scope.link_to_remove_index = undefined;
+                $scope.link_to_remove_name = undefined;
+                $("#removeConfirmModal").modal('hide');
+            }
+            $scope.printMatrix = function (l) {
+                return $scope.getMatrixHTML($scope.getMatrix(l))
+            }
+            $scope.getMatrix = function (l) {
+                return [
+                    [
+                        Math.cos(toRad(l.theta)), -Math.sin(toRad(l.theta)) * Math.cos(toRad(l.alpha)), Math.sin(toRad(l.theta)) * Math.sin(toRad(l.alpha)), l.a * Math.cos(toRad(l.theta))
+                    ], [
+                        Math.sin(toRad(l.theta)), Math.cos(toRad(l.theta)) * Math.cos(toRad(l.alpha)), -Math.cos(toRad(l.theta)) * Math.sin(toRad(l.alpha)), l.a * Math.sin(toRad(l.theta))
+                    ], [
+                        0, Math.sin(toRad(l.alpha)), Math.cos(toRad(l.alpha)), l.d
+
+                    ], [
+                        0, 0, 0, 1
+                    ]
+                ]
+            }
+            $scope.getMatrixHTML = function (m) {
+                return "\u250C\t" + precise(m[0][0]) + "\t\t" + precise(m[0][1]) + "\t\t" + precise(m[0][2]) + "\t\t" + precise(m[0][3]) + "\t\u2510\n" +
+                    "\u2502\t" + precise(m[1][0]) + "\t\t" + precise(m[1][1]) + "\t\t" + precise(m[1][2]) + "\t\t" + precise(m[1][3]) + "\t\u2502\n" +
+                    "\u2502\t" + precise(m[2][0]) + "\t\t" + precise(m[2][1]) + "\t\t" + precise(m[2][2]) + "\t\t" + precise(m[2][3]) + "\t\u2502\n" +
+                    "\u2514\t" + precise(m[3][0]) + "\t\t" + precise(m[3][1]) + "\t\t" + precise(m[3][2]) + "\t\t" + precise(m[3][3]) + "\t\u2518"
+            }
+
+            $scope.getFinalMatrix = function () {
+                var t = [[1, 0, 0, 0],
+                [0, 1, 0, 0],
+                [0, 0, 1, 0],
+                [0, 0, 0, 1]]
+
+                for (let i = 0; i < $scope.links.length; i++) {
+                    t = multiply(t, $scope.getMatrix($scope.links[i]))
+                }
+                return t
+            }
+            $scope.printFinalMatrix = function () {
+                return $scope.getMatrixHTML($scope.getFinalMatrix())
+            }
+            $scope.openNewWindow = function (url) {
+                window.open(url);
+            }
+        });
+
+        app.directive("floatingNumberOnly", function () {
+            return {
+                require: 'ngModel',
+                link: function (scope, ele, attr, ctrl) {
+                    ctrl.$parsers.push(function (inputValue) {
+                        var pattern = new RegExp("^[-+]?[0-9]*\.?[0-9]+$", "g");
+                        if (inputValue == '') {
+                            return '';
+                        }
+                        var newInput = inputValue.replace(/[^-0-9.]/g, '');
+                        var check = pattern.test(inputValue)//On every test, the value is different, so just taking it once
+
+                        if (!check || newInput != inputValue) {
+                            //remove multiple dots
+                            var parts = newInput.split('.');
+                            newInput = parts.shift() + (parts.length ? '.' : '') + parts.join('');
+
+                            //remove multiple, and in middle - signs
+                            parts = newInput.split("-")
+                            newInput = ((parts.length > 1 && parts[0].length == 0) ? "-" : "") + newInput.replace(/[\-]/g, '')
+                        }
+
+                        ctrl.$setViewValue(newInput);
+                        ctrl.$render();
+                        return newInput;
+                    });
+                }
+            };
+        });
+
+        function toRad(angle) {
+            return angle * (Math.PI / 180);
+        }
+
+        function precise(x) {
+            return Math.round(x * 10000) / 10000;
+        }
+        function multiply(a, b) {
+            var aNumRows = a.length, aNumCols = a[0].length,
+                bNumRows = b.length, bNumCols = b[0].length,
+                m = new Array(aNumRows);  // initialize array of rows
+            for (var r = 0; r < aNumRows; ++r) {
+                m[r] = new Array(bNumCols); // initialize the current row
+                for (var c = 0; c < bNumCols; ++c) {
+                    m[r][c] = 0;             // initialize the current cell
+                    for (var i = 0; i < aNumCols; ++i) {
+                        m[r][c] += a[r][i] * b[i][c];
+                    }
+                }
+            }
+            return m;
+        }
+    </script>
+</body>
+
+</html>
