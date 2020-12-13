@@ -515,6 +515,14 @@ The knock-on effect of this is ugly browser-scroll bars at the bottom, so 80px o
     height: 1.6rem;
 }
 
+.social-link-linkedin svg {
+    height: 1.6rem;
+}
+
+.social-link-github svg {
+    height: 1.6rem;
+}
+
 .social-link-wb svg {
     height: 1.6rem;
 }
@@ -2885,7 +2893,7 @@ Usage (In Ghost editor):
 
 /* 12. Dark Mode
 /* ---------------------------------------------------------- */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
     body {
         color: rgba(255, 255, 255, 0.75);
         background: var(--darkmode);
@@ -3111,4 +3119,4 @@ Usage (In Ghost editor):
     .subscribe-form .success .message-success {
         color: color-mod(var(--green) l(+5%) s(-5%));
     }
-}
+} */

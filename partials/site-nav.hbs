@@ -21,6 +21,17 @@
             {{navigation type="secondary"}}
         {{else}}
             <div class="social-links">
+                <a class="social-link social-link-linkedin" title="Linkedin" 
+                    href="https://linkedin.com/in/Prajankya" target="_blank" 
+                    rel="noopener">
+                        {{> "icons/linkedin"}}
+                    </a>
+                <a  class="social-link social-link-github" title="Github" 
+                    href="https://github.com/Prajankya" target="_blank" 
+                    rel="noopener">
+                        {{> "icons/github"}}
+                    </a>
+                    
                 {{#if @site.facebook}}
                     <a class="social-link social-link-fb" href="{{facebook_url @site.facebook}}" title="Facebook" target="_blank" rel="noopener">{{> "icons/facebook"}}</a>
                 {{/if}}
