@@ -9,11 +9,7 @@ into the {body} of the default.hbs template --}}
             {{#tag}}
                 <div class="site-header-content">
                     <h1 class="site-title">
-                        {{#if @site.logo}}
-                            <img class="site-logo" src="{{img_url @site.logo size="l"}}" alt="{{@data.title}}" />
-                        {{else}}
-                            {{@meta_title}}
-                        {{/if}}
+                        {{@meta_title}}
                     </h1>
                     <h2 class="site-description">{{@meta_description}}</h2>
                 </div>
