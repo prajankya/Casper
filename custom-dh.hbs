@@ -15,7 +15,7 @@
     {{!-- Everything inside the #post tags pulls data from the post --}}
     {{#post}}
 
-    <main id="site-main" class="site-main outer">
+    <main id="site-main" class="site-main outer" ng-app="MyApp" ng-controller="MyController">
         <div class="inner">
 
             <article class="post-full {{post_class}} {{#unless feature_image}}no-image{{/unless}}">
@@ -45,142 +45,10 @@
             </article>
 
         </div>
+
     </main>
 
-    <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="demoModalLabel">More Info about Demo Robot</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>The Example DH parameters are for ABB IRB120.</p>
-                    <div class="">
-                        <div class=" side_img" ng-click="openNewWindow('/images/others/abb_irb120.png')">
-                            <picture>
-                                <source media="(min-width: 900px)"
-                                    srcset="/images/others/abb_irb120-1440_1x.webp 1x, /images/others/abb_irb120-1440_2x.webp 2x"
-                                    type="image/webp">
-                                <source media="(min-width: 600px)"
-                                    srcset="/images/others/abb_irb120-900_1x.webp 1x, /images/others/abb_irb120-900_2x.webp 2x"
-                                    type="image/webp">
-                                <source media="(min-width: 200px)"
-                                    srcset="/images/others/abb_irb120-600_1x.webp 1x, /images/others/abb_irb120-600_2x.webp 2x"
-                                    type="image/webp">
-                                <source
-                                    srcset="/images/others/abb_irb120-200_1x.webp 1x, /images/others/abb_irb120-200_2x.webp 2x"
-                                    type="image/webp">
-                                <img alt="Front page"
-                                    srcset="/images/others/abb_irb120-200.png 200w, /images/others/abb_irb120-600.png 600w, /images/others/abb_irb120-900.png 900w, /images/others/abb_irb120-1440.png 1440w"
-                                    src="/images/others/abb_irb120.png">
-                            </picture>
-                        </div>
-                        <div class="side_img" ng-click="openNewWindow('/images/others/abb_irb120_dh.png')">
-                            <picture>
-                                <source media="(min-width: 900px)"
-                                    srcset="/images/others/abb_irb120_dh-1440_1x.webp 1x, /images/others/abb_irb120_dh-1440_2x.webp 2x"
-                                    type="image/webp">
-                                <source media="(min-width: 600px)"
-                                    srcset="/images/others/abb_irb120_dh-900_1x.webp 1x, /images/others/abb_irb120_dh-900_2x.webp 2x"
-                                    type="image/webp">
-                                <source media="(min-width: 200px)"
-                                    srcset="/images/others/abb_irb120_dh-600_1x.webp 1x, /images/others/abb_irb120_dh-600_2x.webp 2x"
-                                    type="image/webp">
-                                <source
-                                    srcset="/images/others/abb_irb120_dh-200_1x.webp 1x, /images/others/abb_irb120_dh-200_2x.webp 2x"
-                                    type="image/webp">
-                                <img alt="Front page"
-                                    srcset="/images/others/abb_irb120_dh-200.png 200w, /images/others/abb_irb120_dh-600.png 600w, /images/others/abb_irb120_dh-900.png 900w, /images/others/abb_irb120_dh-1440.png 1440w"
-                                    src="/images/others/abb_irb120_dh.png">
-                            </picture>
-                        </div>
-                        <div class="side_img" ng-click="openNewWindow('/images/others/irb_dh_params.png')">
-                            <picture>
-                                <source media="(min-width: 900px)"
-                                    srcset="/images/others/irb_dh_params-1440_1x.webp 1x, /images/others/irb_dh_params-1440_2x.webp 2x"
-                                    type="image/webp">
-                                <source media="(min-width: 600px)"
-                                    srcset="/images/others/irb_dh_params-900_1x.webp 1x, /images/others/irb_dh_params-900_2x.webp 2x"
-                                    type="image/webp">
-                                <source media="(min-width: 200px)"
-                                    srcset="/images/others/irb_dh_params-600_1x.webp 1x, /images/others/irb_dh_params-600_2x.webp 2x"
-                                    type="image/webp">
-                                <source
-                                    srcset="/images/others/irb_dh_params-200_1x.webp 1x, /images/others/irb_dh_params-200_2x.webp 2x"
-                                    type="image/webp">
-                                <img alt="Front page"
-                                    srcset="/images/others/irb_dh_params-200.png 200w, /images/others/irb_dh_params-600.png 600w, /images/others/irb_dh_params-900.png 900w, /images/others/irb_dh_params-1440.png 1440w"
-                                    src="/images/others/irb_dh_params.png">
-                            </picture>
-                        </div>
 
-                    </div>
-                    <small>The Robot and the images related to it are courtesy of abb.com website and are used here
-                        as
-                        reference only.</small>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="demoConfirmModal" tabindex="-1" role="dialog" aria-labelledby="demoConfirmModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="demoConfirmModalLabel">Confirm to replace all the data?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Demo Example will replace all the links already existing.
-                    <br>
-                    All the links/data entered in the table
-                    will be removed.
-                    <br>
-                    <br>
-                    Do you want to continue ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" ng-click="demoConfirmModalSubmit()">REPLACE and
-                        Load
-                        demo</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="removeConfirmModal" tabindex="-1" role="dialog"
-        aria-labelledby="removeConfirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="removeConfirmModalLabel">Do you want to remove?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Do you want to remove <i>[[link_to_remove_name]]</i>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" ng-click="RemoveConfirmed()">REMOVE
-                        <i>[[link_to_remove_name]]</i>
-                    </button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
     {{/post}}
 
     {{!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in
@@ -188,9 +56,64 @@
     {{#contentFor "scripts"}}
 
     <style>
-        .modal {
+        /* MODAL STYLES -------------------------------*/
+        modal {
+            /* modals are hidden by default */
             display: none;
         }
+
+        modal .modal {
+            /* modal container fixed across whole screen */
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            /* z-index must be higher than .modal-background */
+            z-index: 1000;
+            /* enables scrolling for tall modals */
+            overflow: auto;
+        }
+
+        modal .modal h2 {
+            margin: 0.2em 0 0.8em 0;
+            padding-bottom: 0.3em;
+            font-size: 3rem;
+            border-bottom: 1px solid rgba(150, 150, 150, 0.2);
+        }
+
+        modal .modal .modal-body {
+            padding: 20px;
+            background: #fff;
+            /* margin exposes part of the modal background */
+            margin: 40px;
+            margin-top: 20vh;
+
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid rgba(0, 0, 0, .2);
+            border-radius: .3rem;
+        }
+
+        modal .modal-background {
+            /* modal background fixed across whole screen */
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            /* semi-transparent black  */
+            background-color: #000;
+            opacity: 0.75;
+            /* z-index must be below .modal and above everything else  */
+            z-index: 900;
+        }
+
+        body.modal-open {
+            /* body overflow is hidden to hide main scrollbar when modal window is open */
+            overflow: hidden;
+        }
+
 
         /**/
         .form-control {
@@ -208,17 +131,9 @@
             transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
         }
 
-        .btn-success.disabled,
-        .btn-success:disabled {
-            color: #fff;
-            background-color: #28a745;
-            border-color: #28a745;
-        }
-
-        .btn-secondary {
-            color: #fff;
-            background-color: #6c757d;
-            border-color: #6c757d;
+        .btn:focus,
+        .btn:hover {
+            text-decoration: none;
         }
 
         .btn.disabled,
@@ -227,10 +142,44 @@
             cursor: not-allowed;
         }
 
+        .btn.focus,
+        .btn:focus {
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+        }
+
+        .btn-secondary {
+            color: #fff;
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            color: #fff;
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+        .btn-secondary.focus,
+        .btn-secondary:focus {
+            box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, .5);
+        }
+
         .btn-danger {
             color: #fff;
             background-color: #dc3545;
             border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            color: #fff;
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-danger.focus,
+        .btn-danger:focus {
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, .5);
         }
 
         .btn-info {
@@ -239,10 +188,32 @@
             border-color: #17a2b8
         }
 
+        .btn-info:hover {
+            color: #fff;
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+
+        .btn-info.focus,
+        .btn-info:focus {
+            box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, .5);
+        }
+
         .btn-success {
             color: #fff;
             background-color: #28a745;
             border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            color: #fff;
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+        .btn-success.focus,
+        .btn-success:focus {
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, .5);
         }
 
         .btn {
@@ -256,7 +227,8 @@
             -ms-user-select: none;
             user-select: none;
             border: 1px solid transparent;
-            padding: .375rem .75rem;
+            padding: 6px 10px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
             border-radius: .25rem;
             transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
         }
@@ -472,7 +444,7 @@
             };
         });
 
-        app.controller('MyController', function ($scope, $window, $timeout, $sce) {
+        app.controller('MyController', function ($scope, $window, $timeout, $sce, ModalService) {
             $scope.links = [];
 
             var demo_links = [{
@@ -513,9 +485,17 @@
                 name: "Link 6"
             }];
 
+            $scope.openModal = function (id) {
+                ModalService.Open(id);
+            }
+
+            $scope.closeModal = function (id) {
+                ModalService.Close(id);
+            }
+
             $scope.loadExample = function () {
                 if ($scope.links.length > 0) {
-                    $('#demoConfirmModal').modal()
+                    $scope.openModal('demoConfirmModal');
                 } else {
                     $scope.links = angular.copy(demo_links);
                 }
@@ -524,7 +504,7 @@
             $scope.demoConfirmModalSubmit = function () {
                 $timeout(function () {
                     $scope.links = angular.copy(demo_links);
-                    $('#demoConfirmModal').modal('hide')
+                    $scope.closeModal('demoConfirmModal');
                 });
             }
             $scope.Add = function () {
@@ -558,13 +538,13 @@
             $scope.Remove = function (index) {
                 $scope.link_to_remove_index = index;
                 $scope.link_to_remove_name = $scope.links[index].name;
-                $("#removeConfirmModal").modal('show');
+                $scope.openModal('removeConfirmModal');
             }
             $scope.RemoveConfirmed = function () {
                 $scope.links.splice($scope.link_to_remove_index, 1);
                 $scope.link_to_remove_index = undefined;
                 $scope.link_to_remove_name = undefined;
-                $("#removeConfirmModal").modal('hide');
+                $scope.closeModal('removeConfirmModal');
             }
             $scope.printMatrix = function (l) {
                 return $scope.getMatrixHTML($scope.getMatrix(l))
@@ -683,6 +663,101 @@
                 window.open(url);
             }
         });
+
+        app.factory("ModalService", function () {
+
+            var modals = []; // array of modals on the page
+            var service = {};
+
+            service.Add = Add;
+            service.Remove = Remove;
+            service.Open = Open;
+            service.Close = Close;
+
+            return service;
+
+            function Add(modal) {
+                // add modal to array of active modals
+                modals.push(modal);
+            }
+
+            function Remove(id) {
+                // remove modal from array of active modals
+
+                for (var i = 0; i < modals.length; i++) {
+                    if (modals[i].id == id) {
+                        modals.splice(i, 1);
+                    }
+                }
+            }
+
+            function Open(id) {
+                // open modal specified by id
+                for (var i = 0; i < modals.length; i++) {
+                    if (modals[i].id == id) {
+                        modals[i].open();
+                    }
+                }
+            }
+
+            function Close(id) {
+                // close modal specified by id
+                for (var i = 0; i < modals.length; i++) {
+                    if (modals[i].id == id) {
+                        modals[i].close();
+                    }
+                }
+            }
+        })
+
+        app.directive("modal", function (ModalService) {
+            return {
+                link: function (scope, element, attrs) {
+                    // ensure id attribute exists
+                    if (!attrs.id) {
+                        console.error('modal must have an id');
+                        return;
+                    }
+
+                    // move element to bottom of page (just before </body>) so it can be displayed above everything else
+                    element.appendTo('body');
+
+                    // close modal on background click
+                    element.on('click', function (e) {
+                        var target = $(e.target);
+                        if (!target.closest('.modal-body').length) {
+                            scope.$evalAsync(Close);
+                        }
+                    });
+
+                    // add self (this modal instance) to the modal service so it's accessible from controllers
+                    var modal = {
+                        id: attrs.id,
+                        open: Open,
+                        close: Close
+                    };
+                    ModalService.Add(modal);
+
+                    // remove self from modal service when directive is destroyed
+                    scope.$on('$destroy', function () {
+                        ModalService.Remove(attrs.id);
+                        element.remove();
+                    });
+
+                    // open modal
+                    function Open() {
+                        element.show();
+                        $('body').addClass('modal-open');
+                    }
+
+                    // close modal
+                    function Close() {
+                        element.hide();
+                        $('body').removeClass('modal-open');
+                    }
+                }
+            };
+        })
 
         app.directive("floatingNumberOnly", function () {
             return {
