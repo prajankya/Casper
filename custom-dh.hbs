@@ -195,7 +195,7 @@
         /**/
         .form-control {
             display: block;
-            min-width: 40px;
+            min-width: 50px;
             width: 100%;
             padding: 2px;
             font-size: 1.3rem;
@@ -224,18 +224,19 @@
         .btn.disabled,
         .btn:disabled {
             opacity: .65;
+            cursor: not-allowed;
         }
 
-        [type=reset],
-        [type=submit],
-        button,
-        html [type=button] {
-            -webkit-appearance: button;
+        .btn-danger {
+            color: #fff;
+            background-color: #dc3545;
+            border-color: #dc3545;
         }
 
-        .pb-2,
-        .py-2 {
-            padding-bottom: .5rem !important;
+        .btn-info {
+            color: #fff;
+            background-color: #17a2b8;
+            border-color: #17a2b8
         }
 
         .btn-success {
@@ -265,17 +266,17 @@
             overflow: visible;
         }
 
-        .modal-open {
-            padding-right: 0px !important;
+        .inline,
+        .inline * {
+            display: inline;
         }
 
-        /**/
         .formula {
             font-family: monospace;
             line-height: normal;
             text-align: center;
             padding: 12px 16px;
-            background: rgba(125, 125, 125, 0.5);
+            background: rgba(150, 150, 150, 0.2);
         }
 
         .mono {
@@ -285,6 +286,24 @@
             padding: 4px 8px;
             font-size: 16px;
             background: rgba(125, 125, 125, 0.5);
+        }
+
+        .step3_row {
+            width: 100%;
+            border-top: 1px solid rgba(125, 125, 125, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .step3_row div:first-child,
+        .step3_row div:first-child input {
+            display: inline;
+            width: auto;
+            margin: 12px;
+        }
+
+        .step3_row div:last-child {
+            margin-left: 20px;
+            margin-bottom: 20px;
         }
 
         .matrix table {
@@ -340,6 +359,98 @@
             bottom: -1px;
             width: 16px;
             border-bottom: 2px solid black;
+        }
+
+
+        /* 
+        Max width before this PARTICULAR table gets nasty
+        This query will take effect for any screen smaller than 760px
+        and also iPads specifically.
+        */
+        @media only screen and (max-width: 760px) {
+
+            /* Force table to not be like tables anymore */
+            #links_table>thead,
+            #links_table>thead th,
+            #links_table>tbody>tr>td {
+                display: block;
+            }
+
+            /* Hide table headers (but not display: none;, for accessibility) */
+            #links_table>thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            #links_table,
+            #links_table>tbody,
+            #links_table>tbody>tr,
+            #links_table>tbody>tr>td {
+                border: none;
+                border-image-width: 0;
+                border-image: none !important;
+                background: none;
+            }
+
+            #links_table>tbody {
+                display: table;
+                width: 90vw !important;
+            }
+
+            #links_table>tbody>tr {
+                border: 1px solid #ccc;
+                padding-bottom: 20px;
+            }
+
+            #links_table>tbody>tr>td {
+                /* Behave  like a "row" */
+                border-bottom: 1px solid #f6f6f6;
+                position: relative;
+                padding-left: 50%;
+            }
+
+            #links_table>tbody>tr>td:before {
+                /* Now like a table header */
+                position: absolute;
+                /* Top/left values mimic padding */
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+            }
+
+            /*
+            Label the data
+            */
+            #links_table>tbody>tr>td:nth-of-type(1):before {
+                content: "LINK";
+            }
+
+            #links_table>tbody>tr>td:nth-of-type(2):before {
+                content: "A";
+            }
+
+            #links_table>tbody>tr>td:nth-of-type(3):before {
+                content: "APLHA";
+            }
+
+            #links_table>tbody>tr>td:nth-of-type(4):before {
+                content: "D";
+            }
+
+            #links_table>tbody>tr>td:nth-of-type(5):before {
+                content: "THETA";
+            }
+
+            #links_table>tbody>tr>td:nth-of-type(6):before {
+                content: "MATRIX";
+            }
+
+            #links_table>tbody>tr>td:nth-of-type(7):before {
+                content: " ";
+            }
         }
     </style>
 
