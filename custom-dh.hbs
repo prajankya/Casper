@@ -1,498 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
+{{!< default}} <meta name="keywords"
+    content="DH parameters calculator,DH calculator,Forward Kinematics calculator,Denavit-Hartenberg Forward kinematics,Denavit-Hartenberg,Denavit Hartenberg,Denavit Hartenberg parameter,DH,Denavit,Hartenberg,prajankya sonar,robotics,6DOF,DOF,kinematics,Forward,DH parameters,robotics">
+    {{!-- The tag above means: insert everything in this file
+    into the {body} of the default.hbs template --}}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Forward Kinematics Calculator from DH Parameters</title>
-
-    <meta name="description" content="A Forward Kinematics Calculator given the DH parameters.">
-    <meta name="keywords"
-        content="DH parameters calculator,DH calculator,Forward Kinematics calculator,Denavit-Hartenberg Forward kinematics,Denavit-Hartenberg,Denavit Hartenberg,Denavit Hartenberg parameter,DH,Denavit,Hartenberg,prajankya sonar,robotics,6DOF,DOF,kinematics,Forward,DH parameters,robotics">
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
-    <link rel="author" href="https://google.com/+PrajankyaSonar" />
-    <meta name="author" content="prajankya" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
-
-    <meta property="og:title"
-        content="Forward Kinematics Calculator from DH Parameters. Prajankya's Personal website" />
-    <meta property="og:site_name" content="Prajankya&#x27;s Personal website" />
-
-    <meta property="og:type" content="website" />
-    <meta property="og:description" content="DH Calculator for Forward Kinematics" />
-    <meta property="og:url" content="https://prajankya.me/dh" />
-
-    <meta property="og:image" content="https://prajankya.me/images/me.jpg" />
-    <meta property="article:publisher" content="https://www.facebook.com/prajankya" />
-    <meta property="og:locale" content="en_US" />
-
-    <meta property="og:image:width" content="380" />
-    <meta property="og:image:height" content="507" />
-
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/favicon.ico">
-
-    <style>
-        body {
-            overflow-y: hidden;
-        }
-
-        #preloader {
-            background: #000;
-            position: fixed;
-            z-index: 999999;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #preloader>div {
-            margin: 50px;
-            height: 28px;
-            width: 28px;
-            animation: rotate 0.8s infinite linear;
-            border: 6px solid #fff;
-            border-right-color: transparent;
-            border-radius: 50%;
-        }
-
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .inline_preloader {
-            width: 100%;
-            height: 50px;
-            text-align: center;
-            background: url('/images/favicons/ajax-loader.gif') center center no-repeat;
-        }
-
-        .modal-open {
-            padding-right: 0px !important;
-        }
-
-        .content {
-            padding: 10px 60px;
-        }
-
-        .header {
-            height: 200px;
-            color: #5e564c;
-            text-align: left;
-            width: 100%;
-            padding-left: 30px;
-            display: flex;
-            text-align: center;
-            justify-content: center;
-            flex-direction: column;
-            background: #b6afa669;
-        }
-
-
-        /*-----------------------------------------------------------------------------------*/
-        /*  Footer
-        /*-----------------------------------------------------------------------------------*/
-
-        #footer {
-            background: #f7f7f7;
-            padding-top: 40px;
-            padding-bottom: 10px;
-        }
-
-        #footer .logo_img {
-            padding-bottom: 40px;
-        }
-
-        #footer .socials-media {
-            width: 100%;
-        }
-
-        #footer .socials-media ul {
-            display: inline-block;
-            float: none;
-            margin: 0 0 20px 0;
-        }
-
-        #footer .socials-media ul li {
-            float: left;
-            padding: 10px;
-        }
-
-        #footer .socials-media ul li a {
-            font-size: 24px;
-            color: #999;
-            letter-spacing: 0.1em;
-            font-weight: 500;
-            background: transparent;
-            text-transform: uppercase;
-            -moz-transition: all 0.5s ease-in-out 0s;
-            -ms-transition: all 0.5s ease-in-out 0s;
-            -o-transition: all 0.5s ease-in-out 0s;
-            -webkit-transition: all 0.5s ease-in-out 0s;
-            transition: all 0.5s ease-in-out 0s;
-        }
-
-        #footer .socials-media ul li a:hover {
-            color: #b8a07e;
-            -moz-transition: all 0.5s ease-in-out 0s;
-            -ms-transition: all 0.5s ease-in-out 0s;
-            -o-transition: all 0.5s ease-in-out 0s;
-            -webkit-transition: all 0.5s ease-in-out 0s;
-            transition: all 0.5s ease-in-out 0s;
-        }
-
-        #footer p {
-            font-size: 12px;
-            letter-spacing: 0.1em;
-            font-weight: 500;
-            margin-top: 0;
-            text-transform: uppercase;
-        }
-
-        .credits {
-            font-size: 13px;
-        }
-
-        .matrix {
-            display: block;
-            unicode-bidi: embed;
-            font-family: monospace;
-            white-space: pre;
-            line-height: normal;
-        }
-
-        .matrix span {
-            width: 30px;
-            text-align: right;
-        }
-
-        .formula {
-            font-family: monospace;
-            line-height: normal;
-            text-align: center;
-            padding: 12px 16px;
-            background: #eee;
-        }
-
-        .mono {
-            font-family: monospace;
-            line-height: normal;
-            font-weight: 700;
-            padding: 4px 8px;
-            font-size: 16px;
-            background: #fdfdfd;
-        }
-
-        .side_img img {
-            max-width: 100%;
-            cursor: pointer;
-        }
-
-        .content h3 {
-            margin-top: 10px !important;
-            color: #a18e73;
-
-        }
-    </style>
-
-    <div id="preloader">
-        <div></div>
-    </div>
-
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="194x194" href="/images/favicons/favicon-194x194.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/images/favicons/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
-    <link rel="shortcut icon" href="/images/favicons/favicon.ico">
-    <meta name="msapplication-config" content="/images/favicons/browserconfig.xml">
-    <link rel="mask-icon" href="/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
-
-    <meta name="apple-mobile-web-app-title" content="Prajankya's Website">
-    <meta name="application-name" content="Prajankya's Website">
-    <meta name="msapplication-TileColor" content="#2b5797">
-    <meta name="theme-color" content="#000000">
-
-    <!-- Bootstrap CSS File -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css"
-        integrity="sha512-oc9+XSs1H243/FRN9Rw62Fn8EtxjEYWHXRvjS43YtueEewbS6ObfXcJNyohjHqVKFPoXXUxwc+q1K7Dee6vv9g=="
-        crossorigin="anonymous" />
-
-    {{!--
-    <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet"> --}}
-
-    <!-- Responsive css -->
-    {{!--
-    <link href="/css/responsive.css" rel="stylesheet"> --}}
-</head>
-
-<body ng-app="MyApp" ng-controller="MyController">
-    <!-- ============= DONE LOADING =============== -->
-    <!-- start section header -->
-    <div class="home header">
-        <h1>
-            Calculate Transformation matrix from D-H Parameters
-        </h1>
-    </div>
-    <div class="content mt-4 pt-4 mb-2 pb-2">
-        <h3>Step 1: Define Z Axis</h3>
-        <hr>
-        <p>Choose <span class="mono">z<sub>i</sub></span> along the axis of motion of the <span
-                class="mono">i+1<sup>th</sup></span> link.</p>
-        <div class="mt-4 mt-sm-2 col-md-4 side_img" ng-click="openNewWindow('/images/others/z_axis.png')">
-            <picture>
-                <source media="(min-width: 900px)"
-                    srcset="/images/others/z_axis-1440_1x.webp 1x, /images/others/z_axis-1440_2x.webp 2x"
-                    type="image/webp">
-                <source media="(min-width: 600px)"
-                    srcset="/images/others/z_axis-900_1x.webp 1x, /images/others/z_axis-900_2x.webp 2x"
-                    type="image/webp">
-                <source media="(min-width: 200px)"
-                    srcset="/images/others/z_axis-600_1x.webp 1x, /images/others/z_axis-600_2x.webp 2x"
-                    type="image/webp">
-                <source srcset="/images/others/z_axis-200_1x.webp 1x, /images/others/z_axis-200_2x.webp 2x"
-                    type="image/webp">
-                <img alt="Front page"
-                    srcset="/images/others/z_axis-200.png 200w, /images/others/z_axis-600.png 600w, /images/others/z_axis-900.png 900w, /images/others/z_axis-1440.png 1440w"
-                    src="/images/others/z_axis.png">
-            </picture>
-
-        </div>
-    </div>
-    <div class="content my-2 py-2">
-        <h3>Step 2: Define X Axis</h3>
-        <hr>
-        <p>Choose <span class="mono">x<sub>i</sub></span> such that it is the shortest vector between <span
-                class="mono">z<sub>i-1</sub></span> and <span class="mono">z<sub>i</sub></span>.</p>
-        <div class="mt-4 mt-sm-2 col-md-8 side_img" ng-click="openNewWindow('/images/others/x_axis.png')">
-            <picture>
-                <source media="(min-width: 900px)"
-                    srcset="/images/others/x_axis-1440_1x.webp 1x, /images/others/x_axis-1440_2x.webp 2x"
-                    type="image/webp">
-                <source media="(min-width: 600px)"
-                    srcset="/images/others/x_axis-900_1x.webp 1x, /images/others/x_axis-900_2x.webp 2x"
-                    type="image/webp">
-                <source media="(min-width: 200px)"
-                    srcset="/images/others/x_axis-600_1x.webp 1x, /images/others/x_axis-600_2x.webp 2x"
-                    type="image/webp">
-                <source srcset="/images/others/x_axis-200_1x.webp 1x, /images/others/x_axis-200_2x.webp 2x"
-                    type="image/webp">
-                <img alt="Front page"
-                    srcset="/images/others/x_axis-200.png 200w, /images/others/x_axis-600.png 600w, /images/others/x_axis-900.png 900w, /images/others/x_axis-1440.png 1440w"
-                    src="/images/others/x_axis.png">
-            </picture>
-
-        </div>
-    </div>
-    <div class="content my-2 py-2">
-        <h3>Step 3: Get D-H Paramerters</h3>
-        <hr>
-
-        <div class="row">
-            <div class="col-md-8 myform">
-                <div class="form-row mb-3">
-                    <label for="a" class="col-2 col-sm-2 col-md-1 p-2 my-auto"><strong>a:</strong></label>
-                    <div class="col-10 col-sm-4 col-md-3 col-lg-2 p-2">
-                        <input ng-model="a" class="ml-md-auto form-control" aria-label="a" aria-describedby="a" required
-                            type="text" floating-number-only>
-                    </div>
-                    <div class="col-sm-6 col-md-8 col-lg-9 mt-1 my-sm-auto">
-                        <span class="mono">a<sub>i</sub></span> is the distance between <span
-                            class="mono">z<sub>i-1</sub></span> and
-                        <span class="mono">x<sub>i</sub></span> along the direction of <span
-                            class="mono">x<sub>i</sub></span>
-                    </div>
-                </div>
-                <div class="form-row mb-3">
-                    <label for="alpha" class="col-2 col-sm-2 col-md-1 p-2 my-auto"><strong>alpha:</strong></label>
-                    <div class="col-10 col-sm-4 col-md-3 col-lg-2 p-2">
-                        <input ng-model="alpha" class="ml-md-auto form-control" aria-label="alpha"
-                            aria-describedby="alpha" required type="text" floating-number-only>
-                    </div>
-                    <div class="col-sm-6 col-md-8 col-lg-9 mt-1 my-sm-auto">
-                        <strong>(In Degrees)</strong>
-                        <span class="mono">&alpha;<sub>i</sub></span> is the angle between <span
-                            class="mono">z<sub>i-1</sub></span> and <span class="mono">z<sub>i</sub></span> along <span
-                            class="mono">x<sub>i</sub></span>
-                    </div>
-                </div>
-
-                <div class="form-row mb-3">
-                    <label for="d" class="col-2 col-sm-2 col-md-1 p-2 my-auto"><strong>d:</strong></label>
-                    <div class="col-10 col-sm-4 col-md-3 col-lg-2 p-2">
-                        <input ng-model="d" class="ml-md-auto form-control" aria-label="d" aria-describedby="d" required
-                            type="text" floating-number-only>
-                    </div>
-                    <div class="col-sm-6 col-md-8 col-lg-9 mt-1 my-sm-auto">
-                        <span class="mono">d<sub>i</sub></span> is the distance between <span
-                            class="mono">z<sub>i-1</sub></span> and <span class="mono">x<sub>i</sub></span> along the
-                        direction
-                        of <span class="mono">z<sub>i-1</sub></span>
-                    </div>
-                </div>
-
-                <div class="form-row mb-3">
-                    <label for="theta" class="col-2 col-sm-2 col-md-1 p-2 my-auto"><strong>theta:</strong></label>
-                    <div class="col-10 col-sm-4 col-md-3 col-lg-2 p-2">
-                        <input ng-model="theta" class="ml-md-auto form-control" aria-label="theta"
-                            aria-describedby="theta" required type="text" floating-number-only>
-                    </div>
-                    <div class="col-sm-6 col-md-8 col-lg-9 mt-1 my-sm-auto">
-                        <strong>(In Degrees)</strong>
-                        <span class="mono">&theta;<sub>i</sub></span> is the angle between <span
-                            class="mono">x<sub>i-1</sub></span> and <span class="mono">x<sub>i</sub></span> along<span
-                            class="mono">z<sub>i-1</sub></span>
-                    </div>
-                </div>
-
-                <p>
-                    <strong>NOTE: unit of <span class="mono">a</span> and <span class="mono">d</span> should be
-                        same.</strong>
-                </p>
-
-                <span ng-if="d==undefined || alpha==undefined || a==undefined || theta==undefined">
-                    <input class="btn btn-outline-primary pb-2" type="button" style="cursor: not-allowed;"
-                             value="Insert Link" />
-                </span>
-                
-                <span ng-if="!(d==undefined || alpha==undefined || a==undefined || theta==undefined)">
-                    <input class="btn btn-success pb-2" type="button" 
-                            ng-click="Add()" value="Insert Link" />
-                </span>
-                
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <button class="btn btn-secondary pb-2 ml-4" ng-click="loadExample()" tabindex="-1">
-                        Load an Example Robot
-                    </button>
-                    <button type="button" class="btn btn-outline-info" data-toggle="modal"
-                        data-target="#demoModal">&quest;</button>
-                </div>
-
-            </div>
-            <div class="mt-4 mt-sm-2 col-md-4 side_img" ng-click="openNewWindow('/images/others/params.png')">
-                <picture>
-                    <source media="(min-width: 900px)"
-                        srcset="/images/others/params-1440_1x.webp 1x, /images/others/params-1440_2x.webp 2x"
-                        type="image/webp">
-                    <source media="(min-width: 600px)"
-                        srcset="/images/others/params-900_1x.webp 1x, /images/others/params-900_2x.webp 2x"
-                        type="image/webp">
-                    <source media="(min-width: 200px)"
-                        srcset="/images/others/params-600_1x.webp 1x, /images/others/params-600_2x.webp 2x"
-                        type="image/webp">
-                    <source srcset="/images/others/params-200_1x.webp 1x, /images/others/params-200_2x.webp 2x"
-                        type="image/webp">
-                    <img alt="Front page"
-                        srcset="/images/others/params-200.png 200w, /images/others/params-600.png 600w, /images/others/params-900.png 900w, /images/others/params-1440.png 1440w"
-                        src="/images/others/params.png">
-                </picture>
+    {{!-- The big featured header, it uses blog cover image as a BG if available --}}
+    <header class="site-header">
+        <div class="outer site-nav-main">
+            <div class="inner">
+                {{> "site-nav"}}
             </div>
         </div>
-        </br>
-        </br>
-        <div ng-if="links.length>0">
-            <table class="table table-hover table-striped table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">link</th>
-                        <th scope="col">a</th>
-                        <th scope="col">alpha</th>
-                        <th scope="col">d</th>
-                        <th scope="col">theta</th>
-                        <th>Matrix</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="" ng-repeat="l in links">
-                        <td>
-                            <input class="form-control" scope="row" ng-model="l.name" required type="text">
-                        </td>
-                        <td>
-                            <input class="form-control" ng-model="l.a" required type="text" floating-number-only>
-                        </td>
-                        <td>
-                            <input class="form-control" ng-model="l.alpha" required type="text" floating-number-only>
-                        </td>
-                        <td>
-                            <input class="form-control" ng-model="l.d" required type="text" floating-number-only>
-                        </td>
-                        <td>
-                            <input class="form-control" ng-model="l.theta" required type="text" floating-number-only>
-                        </td>
-                        <td>
-                            <span class="matrix">[[printMatrix(l)]]</span>
-                        </td>
-                        <td><input class="btn btn-danger" type="button" ng-click="Remove($index)" value="Remove" /></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="content my-2 py-2">
-        <h3>Step 4: Get Transformation matrix</h3>
-        <hr>
-        <p>Use this Transformation matrix to calculate Inverse and Forward Kinematics.</p>
-        <p class="formula" ng-if="links.length>0">
-            T = <span ng-repeat="l in links | reverse">
-                [[l.name]] <span ng-if="!$last"> &nbsp;*&nbsp;</span>
-            </span>
-        </p>
-        <p class="formula" ng-if="links.length==0">
-            T = (I)
-        </p>
-        <div class="text-center">
-            <span class="matrix">[[printFinalMatrix()]]</span>
-        </div>
-    </div>
-    <br>
-    <hr class="m-0 p-0">
-    <hr class="m-0 p-0">
-    <hr class="m-0 p-0">
-    <hr class="m-0 p-0">
-    <!-- start section footer -->
-    <div id="footer" class="text-center">
-        <div class="container">
-            <div class="socials-media text-center">
-                <ul class="list-unstyled">
-                    <li>
-                        <a itemprop="sameAs" href="https://github.com/Prajankya" target="_blank" title="/Prajankya"
-                            onclick="social('github');">
-                            <i class="ion-social-github"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a itemprop="sameAs" href="https://in.linkedin.com/in/Prajankya" target="_blank"
-                            title="/in/Prajankya" onclick="social('linkedin');">
-                            <i class="ion-social-linkedin"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a itemprop="sameAs" href="https://www.facebook.com/Prajankya" target="_blank"
-                            title="/Prajankya" onclick="social('facebook');">
-                            <i class="ion-social-facebook"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    </header>
 
-            <p>&copy; Copyrights Prajankya. All rights reserved.</p>
+    {{!-- Everything inside the #post tags pulls data from the post --}}
+    {{#post}}
+
+    <main id="site-main" class="site-main outer">
+        <div class="inner">
+
+            <article class="post-full {{post_class}} {{#unless feature_image}}no-image{{/unless}}">
+
+                <header class="post-full-header">
+                    <h1 class="post-full-title">{{title}}</h1>
+                </header>
+
+                {{#if feature_image}}
+                <figure class="post-full-image">
+                    {{!-- This is a responsive image, it loads different sizes depending on device
+                    https://medium.freecodecamp.org/a-guide-to-responsive-images-with-ready-to-use-templates-c400bd65c433
+                    --}}
+                    <img srcset="{{img_url feature_image size=" s"}} 300w, {{img_url feature_image size="m" }} 600w,
+                        {{img_url feature_image size="l" }} 1000w, {{img_url feature_image size="xl" }} 2000w" sizes="(max-width: 800px) 400px,
+                            (max-width: 1170px) 1170px,
+                            2000px" src="{{img_url feature_image size=" xl"}}" alt="{{title}}" />
+                </figure>
+                {{/if}}
+
+                <section class="post-full-content">
+                    <div class="post-content" ng-app="MyApp" ng-controller="MyController">
+                        {{content}}
+                    </div>
+                </section>
+
+            </article>
+
         </div>
-    </div>
-    <!-- End section footer -->
+    </main>
 
     <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel"
         aria-hidden="true">
@@ -566,7 +119,8 @@
                         </div>
 
                     </div>
-                    <small>The Robot and the images related to it are courtesy of abb.com website and are used here as
+                    <small>The Robot and the images related to it are courtesy of abb.com website and are used here
+                        as
                         reference only.</small>
                 </div>
                 <div class="modal-footer">
@@ -627,27 +181,175 @@
             </div>
         </div>
     </div>
+    {{/post}}
 
-    <!-- JavaScript Libraries -->
+    {{!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in
+    default.hbs --}}
+    {{#contentFor "scripts"}}
+
+    <style>
+        .modal {
+            display: none;
+        }
+
+        /**/
+        .form-control {
+            display: block;
+            min-width: 40px;
+            width: 100%;
+            padding: 2px;
+            font-size: 1.3rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+
+        .btn-success.disabled,
+        .btn-success:disabled {
+            color: #fff;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-secondary {
+            color: #fff;
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn.disabled,
+        .btn:disabled {
+            opacity: .65;
+        }
+
+        [type=reset],
+        [type=submit],
+        button,
+        html [type=button] {
+            -webkit-appearance: button;
+        }
+
+        .pb-2,
+        .py-2 {
+            padding-bottom: .5rem !important;
+        }
+
+        .btn-success {
+            color: #fff;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: .375rem .75rem;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+
+        button,
+        input {
+            overflow: visible;
+        }
+
+        .modal-open {
+            padding-right: 0px !important;
+        }
+
+        /**/
+        .formula {
+            font-family: monospace;
+            line-height: normal;
+            text-align: center;
+            padding: 12px 16px;
+            background: rgba(125, 125, 125, 0.5);
+        }
+
+        .mono {
+            font-family: monospace;
+            line-height: normal;
+            font-weight: 700;
+            padding: 4px 8px;
+            font-size: 16px;
+            background: rgba(125, 125, 125, 0.5);
+        }
+
+        .matrix table {
+            display: table;
+            font-family: monospace;
+            white-space: pre;
+            line-height: normal;
+            margin: 0;
+            width: 100%;
+
+            border-left: 2px solid #000;
+            border-right: 2px solid #000;
+        }
+
+        .matrix>table>tr>td {
+            position: relative;
+        }
+
+        .matrix>table>tr:first-child>td:first-child:before {
+            content: " ";
+            position: absolute;
+            display: block;
+            left: -1px;
+            top: -1px;
+            width: 16px;
+            border-top: 2px solid black;
+        }
+
+        .matrix>table>tr:first-child>td:last-child:before {
+            content: " ";
+            position: absolute;
+            display: block;
+            right: -1px;
+            top: -1px;
+            width: 16px;
+            border-top: 2px solid black;
+        }
+
+        .matrix>table>tr:last-child>td:first-child:after {
+            content: " ";
+            position: absolute;
+            display: block;
+            left: -1px;
+            bottom: -1px;
+            width: 16px;
+            border-bottom: 2px solid black;
+        }
+
+        .matrix>table>tr:last-child>td:last-child:after {
+            content: " ";
+            position: absolute;
+            right: -1px;
+            bottom: -1px;
+            width: 16px;
+            border-bottom: 2px solid black;
+        }
+    </style>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
         integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
         crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"
-        integrity="sha512-8qmis31OQi6hIRgvkht0s6mCOittjMa9GMqtK9hes5iEQBQE/Ca6yGE5FsW36vyipGoWQswBj/QBm2JR086Rkw=="
-        crossorigin="anonymous"></script>
+
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
     <script>
-        $(function () {
-            $('#preloader').fadeOut();
-            $('body').css({
-                overflow: 'auto'
-            })
-
-        });
-        //        var app = angular.module('MyApp', [])
-
         var app = angular.module('MyApp', [], function ($interpolateProvider) {
             $interpolateProvider.startSymbol('[[');
             $interpolateProvider.endSymbol(']]');
@@ -659,7 +361,7 @@
             };
         });
 
-        app.controller('MyController', function ($scope, $window, $timeout) {
+        app.controller('MyController', function ($scope, $window, $timeout, $sce) {
             $scope.links = [];
 
             var demo_links = [{
@@ -770,11 +472,86 @@
                     ]
                 ]
             }
+
+
             $scope.getMatrixHTML = function (m) {
-                return "\u250C\t" + precise(m[0][0]) + "\t\t" + precise(m[0][1]) + "\t\t" + precise(m[0][2]) + "\t\t" + precise(m[0][3]) + "\t\u2510\n" +
-                    "\u2502\t" + precise(m[1][0]) + "\t\t" + precise(m[1][1]) + "\t\t" + precise(m[1][2]) + "\t\t" + precise(m[1][3]) + "\t\u2502\n" +
-                    "\u2502\t" + precise(m[2][0]) + "\t\t" + precise(m[2][1]) + "\t\t" + precise(m[2][2]) + "\t\t" + precise(m[2][3]) + "\t\u2502\n" +
-                    "\u2514\t" + precise(m[3][0]) + "\t\t" + precise(m[3][1]) + "\t\t" + precise(m[3][2]) + "\t\t" + precise(m[3][3]) + "\t\u2518"
+                return $sce.trustAsHtml($('<table class="matrix"/>')
+                    .append(
+                        $('<tr/>')
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[0][0]))
+                            )
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[0][1]))
+                            )
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[0][2]))
+                            )
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[0][3]))
+                            )
+                    )
+                    .append(
+                        $('<tr/>')
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[1][0]))
+                            )
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[1][1]))
+                            )
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[1][2]))
+                            )
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[1][3]))
+                            )
+                    )
+                    .append(
+                        $('<tr/>')
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[2][0]))
+                            )
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[2][1]))
+                            )
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[2][2]))
+                            )
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[2][3]))
+                            )
+                    )
+                    .append(
+                        $('<tr/>')
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[3][0]))
+                            )
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[3][1]))
+                            )
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[3][2]))
+                            )
+                            .append(
+                                $('<td/>')
+                                    .html(precise(m[3][3]))
+                            )
+                    ).html())
             }
 
             $scope.getFinalMatrix = function () {
@@ -831,7 +608,7 @@
         }
 
         function precise(x) {
-            return Math.round(x * 10000) / 10000;
+            return (Math.round(x * 1e3) / 1e3)
         }
         function multiply(a, b) {
             var aNumRows = a.length, aNumCols = a[0].length,
@@ -849,6 +626,4 @@
             return m;
         }
     </script>
-</body>
-
-</html>
+    {{/contentFor}}
