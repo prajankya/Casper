@@ -2837,6 +2837,16 @@ Usage (In Ghost editor):
     background: color-mod(var(--darkgrey) l(-5%));
 }
 
+.site-footer .footer-img-container {
+    text-align: center;
+    padding: 8px 8px 20px 8px;
+}
+
+.site-footer .footer-img-container img {
+    width: 50vw;
+    max-width: 220px;
+}
+
 .site-footer-content {
     display: flex;
     flex-wrap: wrap;

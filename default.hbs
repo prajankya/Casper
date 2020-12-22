@@ -38,9 +38,8 @@
         {{!-- The footer at the very bottom of the screen --}}
         <footer class="site-footer outer">
             {{#if @site.logo}}
-                <div style="text-align:center; padding:8px 8px 20px 8px">
-                    <img style="width:50vw;max-width:220px;"
-                    src="{{img_url @site.logo size="l"}}" alt="{{@data.title}}" />
+                <div class="footer-img-container">
+                    <img src="{{img_url @site.logo size="l"}}" alt="{{@data.title}}" />
                 </div>
             {{/if}}
 
