@@ -2,8 +2,83 @@
 {{!-- The tag above means: insert everything in this file
 into the {body} of the default.hbs template --}}
 
-<header class="site-home-header">
-    {{> header-background youtube_id="u_6a2h6l7q0"}} {{!--Special header-image.hbs partial to generate the background image--}}
+<header class="site-home-header bgvideo_container">
+    {{> header-background }} {{!--Special header-image.hbs partial to generate the background image--}}
+
+        <style>
+            {{!-- #videoBG {
+                position: absolute;
+                background: #000;
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                #z-index: -999;
+                width:100%;
+                overflow: hidden;
+
+            } --}}
+            .site-header-background {
+                background: none;
+            }
+            .site-header-background:before,
+            .site-header-background:after {
+                display: none;
+            }
+
+            .bgvideo_container {
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
+            }
+            .bgvideo_container video {
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: -2;
+                object-fit: cover;
+            }
+            .bgvideo_container .dim {
+                height: 100%;
+                width: 100%;
+                opacity: 0.4;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: -1;
+                background-color: black;
+            }
+            .site-nav-left-wrapper::after{
+                background: none!important;
+            }
+        </style>
+        <script>
+            window.onload = function(){
+                var player = document.getElementById('bg_video');
+                var mp4Vid = document.querySelector("#bg_video source");
+
+                player.pause();
+
+                if (window.screen.width > 480) {
+                    mp4Vid.src = "/videos/background_normal.mp4"
+                } else if (window.screen.width > 240) {
+                    mp4Vid.src = "/videos/background_small.mp4"
+                } else {
+                    mp4Vid.src = "/videos/background_smallest.mp4"
+                }
+
+                player.load();
+                player.play();
+            }
+        </script>
+         <video id="bg_video" autoplay='true' loop='true' muted='true' poster='/images/background_video_poster.jpeg'>
+            <source src="" type="video/mp4">
+         </video>
+
+        <div class='dim'></div>
 
         <div class="inner">
             {{> "site-nav"}}
